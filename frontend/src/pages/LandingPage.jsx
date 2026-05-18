@@ -215,6 +215,122 @@ export default function LandingPage() {
 
         </div>
       </main>
+
+
+      {/* FAQ + Footer */}
+      <section className="w-full max-w-7xl mx-auto px-6 pb-16 z-10">
+        {/* FAQ */}
+          <div
+            id="faq"
+            className="mt-6 bg-slate-900/60 backdrop-blur-xl border border-slate-700/50 rounded-[2rem] p-8 md:p-10"
+          >
+          <div className="flex items-start justify-between gap-6 mb-8">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-white">FAQ</h2>
+              <p className="text-slate-400 mt-2 max-w-2xl">
+                Quick answers about uploads, privacy, and how NyayaVanni helps you understand legal documents.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {[
+              {
+                q: "What file types are supported?",
+                a: "You can upload PDF, PNG, and JPG files. For best results, use clear scans and readable text."
+              },
+              {
+                q: "Is my document stored permanently?",
+                a: "By default, documents are processed for analysis. If storage is enabled, you may see history features; otherwise files are handled temporarily."
+              },
+              {
+                q: "Can I trust the output as legal advice?",
+                a: "NyayaVanni simplifies and explains. For critical decisions, consult a licensed lawyer."
+              },
+              {
+                q: "What if the upload fails?",
+                a: "Check your internet connection and try a smaller file. If the backend is offline, you’ll see a fallback demo navigation."
+              },
+            ].map((item, idx) => (
+              <details
+                key={idx}
+                className="group rounded-xl border border-slate-700/50 bg-slate-950/40 p-5 hover:border-slate-600 transition"
+              >
+                <summary className="cursor-pointer list-none flex items-center justify-between gap-4">
+                  <span className="font-semibold text-white">{item.q}</span>
+                  <span className="shrink-0 w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-open:bg-white/10 transition">
+                    <span className="text-slate-300 group-open:rotate-45 transition-transform">+</span>
+                  </span>
+                </summary>
+                <p className="mt-3 text-slate-400 leading-relaxed">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="mt-10 rounded-[2rem] border border-slate-700/50 bg-slate-900/60 backdrop-blur-xl p-8 md:p-10">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+            {/* Brand */}
+            <div className="max-w-md">
+              <div className="flex items-center gap-2 text-xl font-bold text-white">
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-nyaya-500/15 border border-nyaya-500/25">
+                  <Scale className="w-5 h-5 text-nyaya-400" />
+                </span>
+                Nyaya<span className="text-nyaya-400">Vanni</span>
+              </div>
+              <p className="mt-3 text-slate-400">
+                Understand Indian legal documents in simple language. Upload contracts/notices and get clearer insights fast.
+              </p>
+            </div>
+
+            {/* Links */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 w-full md:w-auto">
+              <div>
+                <p className="text-sm font-semibold text-white mb-3">Product</p>
+                <div className="flex flex-col gap-2 text-slate-400">
+                  <button onClick={() => navigate('/chat')} className="text-left hover:text-white transition">Chat with AI</button>
+                  <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-left hover:text-white transition">Upload Document</button>
+                  <button onClick={() => navigate('/lawyers')} className="text-left hover:text-white transition">Hire a Lawyer</button>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold text-white mb-3">Resources</p>
+                <div className="flex flex-col gap-2 text-slate-400">
+                <button
+                  onClick={() => navigate('/faq')}
+                  className="text-left hover:text-white transition"
+                >
+                  FAQ
+                </button>
+                  <button onClick={() => navigate('/privacy-policy')} className="text-left hover:text-white transition">Privacy Policy</button>
+                  <button onClick={() => navigate('/terms')} className="text-left hover:text-white transition">Terms of Service</button>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold text-white mb-3">Contact</p>
+                <div className="flex flex-col gap-2 text-slate-400">
+                  <a href="mailto:support@nyayavanni.com" className="hover:text-white transition">support@nyayavanni.com</a>
+                  <span className="text-slate-500 text-sm">Mon–Fri, 10AM–6PM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-slate-700/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <p className="text-slate-500 text-sm">
+              © {new Date().getFullYear()} NyayaVanni. All rights reserved.
+            </p>
+            <p className="text-slate-500 text-sm">
+              Not legal advice. For professional help, consult a lawyer.
+            </p>
+          </div>
+        </footer>
+      </section>
+
+
     </div>
   );
 }

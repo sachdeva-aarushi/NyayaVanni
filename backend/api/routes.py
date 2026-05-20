@@ -96,6 +96,10 @@ async def analyze_document(document_id: str, language: str = "en", file: UploadF
 async def chat_with_document(document_id: str, request: ChatRequest):
     """Send chat message with context"""
     try:
+        # Validate user message is not empty
+        if not request.user_message or not request.user_message.strip():
+            raise HTTPException(status_code=400, detail="Message cannot be empty")
+        
         # In full production, fetch analysis and history from DynamoDB
         analysis = request.document_analysis or {}
         
@@ -107,4 +111,37 @@ async def chat_with_document(document_id: str, request: ChatRequest):
         return ChatResponse(response=response_text)
     except Exception as e:
         logger.error(f"Chat failed: {e}")
+        raise HTTPException(status_code=500, detail="Chat generation failed")
+
+
+@api_router.post("/chat/general", response_model=ChatResponse)
+async def chat_general(request: ChatRequest):
+    """Send general legal chat message without document context"""
+    try:
+        # Validate user message is not empty
+        if not request.user_message or not request.user_message.strip():
+            raise HTTPException(status_code=400, detail="Message cannot be empty")
+        
+        # For general chat, document_analysis should be empty or None
+        analysis = request.document_analysis or {}
+        
+        # Format history - handle both dict and ChatMessage objects
+        history = []
+        for msg in request.chat_history:
+            if isinstance(msg, dict):
+                history.append({"role": msg.get("role"), "message": msg.get("message")})
+            else:
+                history.append({"role": msg.role, "message": msg.message})
+        
+        # Generate response using existing service
+        response_text = generate_chat_response(
+            document_analysis=analysis,
+            chat_history=history,
+            user_message=request.user_message,
+            language=request.language
+        )
+        
+        return ChatResponse(response=response_text)
+    except Exception as e:
+        logger.error(f"General chat failed: {e}")
         raise HTTPException(status_code=500, detail="Chat generation failed")

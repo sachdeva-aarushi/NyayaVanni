@@ -113,7 +113,7 @@ export default function LandingPage() {
         </p>
 
         {/* Actions Area */}
-        <div className="flex flex-col md:flex-row gap-8 w-full max-w-5xl justify-center relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl justify-center relative z-10">
           
           {/* Upload Document Card */}
           <div className="w-full relative animate-float group" style={{ animationDelay: '0s' }}>
@@ -213,6 +213,32 @@ export default function LandingPage() {
             </div>
           </div>
 
+
+          {/* Scam Detector Card */}
+          <div className="w-full relative animate-float group" style={{ animationDelay: '0.4s' }}>
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 rounded-[2rem] blur-xl transform translate-y-2 translate-x-1 -z-10 transition-all duration-500 group-hover:blur-2xl group-hover:scale-105"></div>
+
+            <div
+              className="h-full bg-slate-900/80 backdrop-blur-xl rounded-[2rem] p-10 border-2 border-slate-700/50 hover:border-slate-600 hover:bg-slate-800/80 transition-all duration-300 flex flex-col items-center justify-center min-h-[360px] hover:-translate-y-2 cursor-pointer"
+              onClick={() => navigate('/scam-detector')}
+            >
+              <div className="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mb-6 shadow-inner ring-1 ring-slate-700 group-hover:scale-110 group-hover:bg-slate-700 transition-all duration-300">
+                <ShieldCheck className="w-8 h-8 text-emerald-400 group-hover:text-emerald-300" />
+              </div>
+
+              <h3 className="text-2xl font-bold mb-3 text-white">Scam Detector</h3>
+              <p className="text-slate-400 mb-8 text-center text-base max-w-xs flex-1">
+                Analyze suspicious legal SMS/WhatsApp/email text and get a risk score + reasons.
+              </p>
+
+              <button
+                onClick={(e) => { e.stopPropagation(); navigate('/scam-detector'); }}
+                className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white px-8 py-3 rounded-full font-semibold transition-all shadow-[0_0_20px_rgba(16,185,129,0.25)] flex items-center justify-center gap-2 hover:scale-105"
+              >
+                Try Scam Detector <ArrowRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
         </div>
       </main>
 

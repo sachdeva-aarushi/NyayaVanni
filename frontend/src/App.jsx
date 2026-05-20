@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import GeneralChat from './pages/GeneralChat';
 import HireLawyer from './pages/HireLawyer';
 import FAQ from "./pages/FAQ";
+import ScamDetector from "./pages/ScamDetector";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
@@ -36,6 +37,7 @@ function App() {
             <Route path="/chat" element={<GeneralChat />} />
             <Route path="/lawyers" element={<HireLawyer />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/scam-detector" element={<ScamDetector />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
           </Routes>

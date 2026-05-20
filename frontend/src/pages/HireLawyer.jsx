@@ -138,8 +138,14 @@ export default function HireLawyer() {
       const d = new Date();
       d.setDate(d.getDate() + i);
 
+      // Build a local yyyy-MM-dd string to avoid UTC timezone shifts when parsing later
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0'); // 1-based month
+      const dayNum = String(d.getDate()).padStart(2, '0');
+      const fullDate = `${year}-${month}-${dayNum}`;
+
       dates.push({
-        fullDate: d.toISOString().split("T")[0],
+        fullDate,
         dayName: d.toLocaleDateString(locale, { weekday: "short" }),
         dayNum: d.getDate(),
         month: d.toLocaleDateString(locale, { month: "short" }),
@@ -187,6 +193,54 @@ export default function HireLawyer() {
     setBookingComplete(false);
     setCurrentTicket(null);
     setIsModalOpen(true);
+  };
+
+  const handleConfirmBooking = (e) => {
+    e.preventDefault();
+    if (!selectedLawyer || !selectedDate || !selectedTime) return;
+
+    const randomId = Math.floor(1000 + Math.random() * 9000);
+    const meetingCode = `NV-${randomId}-${selectedLawyer.name
+      .split(" ")
+      .pop()
+      .toUpperCase()}`;
+
+    // Parse the stored yyyy-MM-dd as local date parts to avoid UTC parsing issues
+    const [y, m, d] = selectedDate.split('-').map(Number); // m is 1-12
+    const localDateObj = new Date(y, m - 1, d); // monthIndex is 0-based
+    const formattedDate = localDateObj.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    const newBooking = {
+      id: Date.now(),
+      meetingCode,
+      lawyer: selectedLawyer,
+      date: formattedDate,
+      rawDate: selectedDate,
+      time: selectedTime,
+      description: caseDescription,
+      attachedContext: attachDocument ? "NyayaVanni_Extracted_Context.pdf" : null,
+      bookedAt: new Date().toLocaleDateString(),
+    };
+
+    const updatedBookings = [newBooking, ...activeBookings];
+    setActiveBookings(updatedBookings);
+    localStorage.setItem("nyayavanni_consultations", JSON.stringify(updatedBookings));
+
+    setCurrentTicket(newBooking);
+    setBookingComplete(true);
+  };
+
+  const handleCancelBooking = (bookingId) => {
+    if (window.confirm("Are you sure you want to cancel this consultation booking?")) {
+      const next = activeBookings.filter((b) => b.id !== bookingId);
+      setActiveBookings(next);
+      localStorage.setItem("nyayavanni_consultations", JSON.stringify(next));
+    }
   };
 
   return (

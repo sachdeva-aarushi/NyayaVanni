@@ -4,7 +4,8 @@ import logging
 import sqlite3
 import json
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
+
 
 logger = logging.getLogger(__name__)
 
@@ -99,7 +100,7 @@ def save_cached_analysis(doc_id: str, language: str, extracted_text: str, analys
     On subsequent requests for the same document_id + language pair, the cached
     result is returned immediately, skipping OCR, FAISS retrieval, and Gemini API calls.
     """
-    timestamp = datetime.utcnow().isoformat()
+    timestamp = datetime.now(timezone.utc).isoformat()
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()

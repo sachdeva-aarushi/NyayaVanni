@@ -10,6 +10,8 @@ from pydantic import BaseModel
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
+from main import limiter
+
 from services.document_classifier import classify_document
 from services.knowledge_graph_service import LegalKnowledgeGraphBuilder
 from services.storage_service import (
@@ -224,8 +226,9 @@ def analyze_document(request: Request, document_id: str, language: str = "en", f
             raise HTTPException(status_code=400, detail="The uploaded document is corrupted or could not be parsed.")
 
 @api_router.post("/chat/general")
-def chat_general(request: ChatRequest):
-    """General legal chat no document context."""
+@limiter.limit("10/minute")
+def chat_general(request: ChatRequest, request_obj: Request):
+    """General legal chat no document context. Rate limited to 10 requests per minute per IP."""
     try:
         if not request.user_message or not request.user_message.strip():
             raise HTTPException(status_code=400, detail="Message cannot be empty")

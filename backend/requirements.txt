@@ -14,3 +14,4 @@ pydantic-settings
 python-dotenv
 gunicorn
 reportlab
+slowapi==0.1.9  # Rate limiting for API endpoints
